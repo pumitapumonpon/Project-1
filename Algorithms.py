@@ -1,6 +1,7 @@
 import random
 import math
 from Graph import Graph
+from collections import deque
 import numpy
 
 
@@ -173,7 +174,7 @@ def barabasi_albert_model(n, d, digraph=False, autocycle=False):
 
 
 def dorogovtsev_mendes_model(n, digraph=False):
-    #           Modelo Gn Dorogovtsev-Mendes. 
+    #           Gn Dorogovtsev-Mendes Model. 
     #   Creates 3 nodes and 3 edges forming a triangle. 
     #   Then, for each additional node, select 
     #   a random edge and edges are created between the
@@ -205,5 +206,132 @@ def dorogovtsev_mendes_model(n, digraph=False):
         graph.add_edge(f"Arista {i}--{selected_edge.node1}", i, selected_edge.node1)
     
     return graph
+
+
+
+def generate_random_graph(num_nodes, probability=0.3):
+    graph = Graph(digraph=False, autocycle=False)
+    for node in range(num_nodes):
+        graph.add_node(node)
+
+    for node in range(num_nodes):
+        for neighbor in range(node + 1, num_nodes):
+            if random.random() < probability:
+                graph.add_edge(f"Arista {node}--{neighbor}", str(node), str(neighbor))
+
+    return graph
+
+
+def BFS(graph, start_node):
+    #           Breadth-First Search.
+    # Consists of exploring from the source node 'start_node' 
+    # and outwards in all possible directions, adding nodes one "layer" at a time.
+    """     Generates a tree using Breadth-First Search 
+        def BFS(graph, start_node):
+            :graph: original graph
+            :start_node: source node
+            :return: tree BFS generated
+    """
+    result = Graph(digraph=graph.digraph, autocycle=graph.autocycle)
+
+    visited = set()
+    stack = deque()
+
+    result.add_node(start_node)
+
+    stack.append(start_node)
+    visited.add(start_node.id)
+
+    while stack:
+        current_node = stack.popleft()
+
+        node = graph.get_node(current_node.id)
+        if node:
+            for neighbor in node.neighbors:           
+                if neighbor.id not in  visited:
+                    result.add_edge(f"Arista {node.id}--{neighbor.id}", node, neighbor)
+            
+                    visited.add(neighbor.id)
+                    stack.append(neighbor)
+    return result
+
+
+def DFS_R(graph, start_node, visited=set(), result=None): 
+    #       Recursive Depth-First Search
+    #   Consists of expanding each and every one 
+    #   of the nodes that it locates, recurrently, 
+    #   on a specific path and in a recursive way.
+    """     Generates a tree using Recursive Depth-First Search
+        def DFS_R(graph, start_node, visited=None, result=None):
+            :graph: original graph
+            :start_node: source node
+            :visited: indicates if the current node was visited
+            :result: the auxiliar graph to return the tree DFS generated
+            :return: tree DFS generated
+    """
+
+    if visited is None:
+        visited = set()
+
+    if result is None:
+        result = Graph(digraph=graph.digraph, autocycle=graph.autocycle)
+    
+    
+    visited.add(start_node.id)
+    result.add_node(start_node.id)
+
+    for edge in start_node.edges: 
+        if edge.node0.id == start_node.id:
+            neighbor = edge.node1
+        else:
+            neighbor = edge.node0
+        
+        if neighbor.id  not in visited:
+            result.add_edge(f"Arista {start_node.id}--{neighbor.id}", start_node.id, neighbor.id)
+            
+            result = DFS_R(graph, neighbor, visited, result)
+    
+    return result
+
+                       
+def DFS_I(graph, start_node):
+    #       Iterative Depth-First Search 
+    #   Consists of expanding each and every one 
+    #   of the nodes that it locates, recurrently, 
+    #   on a specific path and in a iterative way.
+    """     Generates a tree using Recursive Depth-First Search
+        def DFS_I(graph, start_node, visited=None, result=None):
+            :graph: original graph
+            :start_node: source node
+            :return: tree DFS generated
+    """
+    result = Graph(digraph=graph.digraph, autocycle=graph.autocycle)
+    visited = set()
+    stack = []
+    
+    result.add_node(start_node)
+    
+    stack.append(start_node)
+    visited.add(start_node.id)
+
+    while stack:
+        current_node = stack.pop()
+        visited.add(current_node.id)
+        
+        for edge in current_node.edges:
+            if edge.node0.id == start_node.id:
+                neighbor = edge.node1
+            else:
+                neighbor = edge.node0
+
+            if neighbor.id  not in visited:
+                result.add_node(neighbor)
+                result.add_edge(f"Arista {current_node.id}--{neighbor.id}", current_node, neighbor)
+
+                visited.add(neighbor.id)
+                stack.append(neighbor)
+
+    return result
+
 
 

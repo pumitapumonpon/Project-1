@@ -31,7 +31,6 @@ class Graph:
 
             self.edges[name] = edge
 
-
             n0.neighbors.append(n1)
             n1.neighbors.append(n0)
 
