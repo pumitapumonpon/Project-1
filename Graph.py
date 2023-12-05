@@ -5,7 +5,7 @@ from Edge import Edge
 
 class Graph:
 
-    def __init__(self, digraph, autocycle=True):
+    def __init__(self, digraph=False, autocycle=False):
         self.id = 'Grafo'
         self.digraph = digraph
         self.autocycle = autocycle
@@ -21,39 +21,30 @@ class Graph:
         
         return node
 
-    def add_edge(self, name, node0, node1):
-        edge = self.edges.get(name)
+    def add_edge(self, name, node0, node1, weight=None): 
+            edge = self.edges.get(name)
 
-        if edge is None:
-            n0 = self.add_node(node0)
-            n1 = self.add_node(node1)
-            edge = Edge(name, n0, n1)
+            if edge is None:
+                n0 = self.add_node(node0)
+                n1 = self.add_node(node1)
+                edge = Edge(name, n0, n1, weight)
 
-            self.edges[name] = edge
+                self.edges[name] = edge
 
-            n0.neighbors.append(n1)
-            n1.neighbors.append(n0)
+                n0.neighbors.append(n1)
+                n1.neighbors.append(n0)
 
-            n0.edges.append(edge)
-            n1.edges.append(edge)
+                n0.edges.append(edge)
+                n1.edges.append(edge)
 
-        return edge
-    
-    def has_edge(self, node_u, node_v):
-    # """
-    # Verifica si existe una arista entre los nodos node_u y node_v en el grafo.
-    # :param node_u: Nombre del primer nodo.
-    # :param node_v: Nombre del segundo nodo.
-    # :return: True si hay una arista entre los nodos, False en caso contrario.
-    # """
-        if node_u in self.nodes:
-            # Obtiene la lista de vecinos del nodo node_u.
-            neighbors_u = self.nodes[node_u].neighbors
-            # Verifica si el nodo node_v está en la lista de vecinos de node_u.
-            if node_v in neighbors_u:
-                return True
-        # Si no se encuentra una arista entre los nodos, se retorna False.
-        return False
+            return edge
+
+    def get_edge(self, node_id_0, node_id_1):
+        for edge in self.edges.values():
+            if (edge.node0.id == node_id_0 and edge.node1.id == node_id_1) or \
+            (edge.node0.id == node_id_1 and edge.node1.id == node_id_0):
+                return edge
+        return None
 
     def get_node(self, name):
         return self.nodes.get(name)
@@ -70,14 +61,22 @@ class Graph:
     
     def save_graph(self, filename):
         value = 'digraph X {\n' if self.digraph else 'graph X {\n'
-        for e in self.edges.values():
-            n0 = e.node0.id
-            n1 = e.node1.id
+
+        for node in self.nodes.values():
+            if hasattr(node, 'distance'):
+                value += f'  {node.id} [label="{node.distance:.2f}"];\n'
+
+        for edge in self.edges.values():
+            n0 = edge.node0.id
+            n1 = edge.node1.id
+            weight = f' [weight={edge.weight}]' if edge.weight is not None else ''  # Weight label
             char = ' -> ' if self.digraph else ' -- '
-            value += str(n0) + char + str(n1) + ';\n' 
+
+            value += f'  {n0}{char}{n1}{weight};\n'
+
         value += '}\n'
 
         with open(filename, "w") as file:
             file.write(value)
-    
+
 

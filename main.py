@@ -40,21 +40,30 @@ if __name__ == "__main__":
     # bfs_graph.save_graph(f"Graphs/BFS/bfs_graph_after ({500} nodes).dot")
 
     # Depth-Firsth Search Iterative
-    dfsi_graph = a.generate_random_graph(500, 0.1)
-    dfsi_graph.save_graph(f"Graphs/DFS/dfsi_graph_before ({500} nodes).dot")
+    # dfsi_graph = a.generate_random_graph(500, 0.1)
+    # dfsi_graph.save_graph(f"Graphs/DFS/dfsi_graph_before ({500} nodes).dot")
     
-    source_node = dfsi_graph.get_node(random.choice(list(dfsi_graph.nodes.keys())))
-    dfsi_graph = a.DFS_I(dfsi_graph, source_node)
-    dfsi_graph.save_graph(f"Graphs/DFS/dfsi_graph_after ({500} nodes).dot")
+    # source_node = dfsi_graph.get_node(random.choice(list(dfsi_graph.nodes.keys())))
+    # dfsi_graph = a.DFS_I(dfsi_graph, source_node)
+    # dfsi_graph.save_graph(f"Graphs/DFS/dfsi_graph_after ({500} nodes).dot")
     
 
     # Depth-Firsth Search Recursive
-    dfsr_graph = a.generate_random_graph(500, 0.1)
-    dfsr_graph.save_graph(f"Graphs/DFS/dfsr_graph_before ({500} nodes).dot")
+    # dfsr_graph = a.generate_random_graph(500, 0.1)
+    # dfsr_graph.save_graph(f"Graphs/DFS/dfsr_graph_before ({500} nodes).dot")
     
-    source_node = dfsr_graph.get_node(random.choice(list(dfsr_graph.nodes.keys())))
-    dfsr_graph = a.DFS_R(dfsr_graph, source_node)
-    dfsr_graph.save_graph(f"Graphs/DFS/dfsr_graph_after ({500} nodes).dot")
+    # source_node = dfsr_graph.get_node(random.choice(list(dfsr_graph.nodes.keys())))
+    # dfsr_graph = a.DFS_R(dfsr_graph, source_node)
+    # dfsr_graph.save_graph(f"Graphs/DFS/dfsr_graph_after ({500} nodes).dot")
+
+
+    # Dijkstra
+    dijkstra_graph = a.generate_random_graph(10, 0.7, False, False, True, 1, 30)
+    dijkstra_graph.save_graph(f"Graphs/Dijkstra/dijkstra_graph_before ({10} nodes).dot")
+
+    source_node = dijkstra_graph.get_node(random.choice(list(dijkstra_graph.nodes.keys())))
+    dijkstra_graph = a.dijkstra(dijkstra_graph, source_node)
+    dijkstra_graph.save_graph(f"Graphs/Dijkstra/dijkstra_graph_after ({10} nodes).dot")
 
 
 

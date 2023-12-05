@@ -3,6 +3,7 @@ import math
 from Graph import Graph
 from collections import deque
 import numpy
+import Node
 
 
 
@@ -62,7 +63,7 @@ def erdos_renyi_model(n, m, digraph=False, autocycle=False):
         u = random.randint(0, n - 1)
         v = random.randint(0, n - 1)
 
-        if u != v: #or (u == v and autocycle) and not graph.has_edge(u, v):
+        if u != v: 
             graph.add_edge(f'Arista {u}--{v}', u, v)
 
     # for i in range(n):
@@ -209,20 +210,28 @@ def dorogovtsev_mendes_model(n, digraph=False):
 
 
 
-def generate_random_graph(num_nodes, probability=0.3):
-    graph = Graph(digraph=False, autocycle=False)
+def generate_random_graph(num_nodes, probability=0.3, digraph=False, autocycle=False, weighted=False, min_weight=1, max_weight=30):
+    graph = Graph(digraph=digraph, autocycle=autocycle)
+    
     for node in range(num_nodes):
-        graph.add_node(node)
+        graph.add_node(str(node))
 
     for node in range(num_nodes):
         for neighbor in range(node + 1, num_nodes):
             if random.random() < probability:
-                graph.add_edge(f"Arista {node}--{neighbor}", str(node), str(neighbor))
+                if weighted:
+                    weight = random.randint(min_weight, max_weight)
+                    edge_name = f"Arista {node}--{neighbor}"
+                    graph.add_edge(edge_name, str(node), str(neighbor), weight)
+                else:
+                    edge_name = f"Arista {node}--{neighbor}"
+                    graph.add_edge(edge_name, str(node), str(neighbor))
 
     return graph
 
 
-def BFS(graph, start_node):
+
+def BFS(graph, source_node):
     #           Breadth-First Search.
     # Consists of exploring from the source node 'start_node' 
     # and outwards in all possible directions, adding nodes one "layer" at a time.
@@ -237,10 +246,10 @@ def BFS(graph, start_node):
     visited = set()
     stack = deque()
 
-    result.add_node(start_node)
+    result.add_node(source_node)
 
-    stack.append(start_node)
-    visited.add(start_node.id)
+    stack.append(source_node)
+    visited.add(source_node.id)
 
     while stack:
         current_node = stack.popleft()
@@ -256,7 +265,7 @@ def BFS(graph, start_node):
     return result
 
 
-def DFS_R(graph, start_node, visited=set(), result=None): 
+def DFS_R(graph, source_node, visited=set(), result=None): 
     #       Recursive Depth-First Search
     #   Consists of expanding each and every one 
     #   of the nodes that it locates, recurrently, 
@@ -277,24 +286,24 @@ def DFS_R(graph, start_node, visited=set(), result=None):
         result = Graph(digraph=graph.digraph, autocycle=graph.autocycle)
     
     
-    visited.add(start_node.id)
-    result.add_node(start_node.id)
+    visited.add(source_node.id)
+    result.add_node(source_node.id)
 
-    for edge in start_node.edges: 
-        if edge.node0.id == start_node.id:
+    for edge in source_node.edges: 
+        if edge.node0.id == source_node.id:
             neighbor = edge.node1
         else:
             neighbor = edge.node0
         
         if neighbor.id  not in visited:
-            result.add_edge(f"Arista {start_node.id}--{neighbor.id}", start_node.id, neighbor.id)
+            result.add_edge(f"Arista {source_node.id}--{neighbor.id}", source_node.id, neighbor.id)
             
             result = DFS_R(graph, neighbor, visited, result)
     
     return result
 
                        
-def DFS_I(graph, start_node):
+def DFS_I(graph, source_node):
     #       Iterative Depth-First Search 
     #   Consists of expanding each and every one 
     #   of the nodes that it locates, recurrently, 
@@ -309,17 +318,17 @@ def DFS_I(graph, start_node):
     visited = set()
     stack = []
     
-    result.add_node(start_node)
+    result.add_node(source_node)
     
-    stack.append(start_node)
-    visited.add(start_node.id)
+    stack.append(source_node)
+    visited.add(source_node.id)
 
     while stack:
         current_node = stack.pop()
         visited.add(current_node.id)
         
         for edge in current_node.edges:
-            if edge.node0.id == start_node.id:
+            if edge.node0.id == source_node.id:
                 neighbor = edge.node1
             else:
                 neighbor = edge.node0
@@ -330,6 +339,44 @@ def DFS_I(graph, start_node):
 
                 visited.add(neighbor.id)
                 stack.append(neighbor)
+
+    return result
+
+
+
+def dijkstra(self, source_node):
+    start_node = self.get_node(source_node.id)
+
+    if start_node is None:
+        print(f"El nodo {source_node} no existe en el grafo.")
+        return None
+
+    start_node.distance = 0
+    unvisited_nodes = list(self.nodes.values())
+    result = Graph(digraph=False, autocycle=False)
+
+    while unvisited_nodes:
+        current_node = min(unvisited_nodes, key=lambda x: x.distance)
+
+        for edge in current_node.edges:
+            if edge.node0.id == source_node.id:
+                neighbor = edge.node1
+            else:
+                neighbor = edge.node0
+            
+            new_distance = current_node.distance + edge.weight
+
+            if new_distance < neighbor.distance and not neighbor.visited: 
+
+                result.add_node(self.get_node(current_node.id))
+                result.add_node(self.get_node(neighbor.id))
+                result.add_edge(f"Arista {current_node.id}--{neighbor.id}", current_node, neighbor, edge.weight)
+
+                neighbor.visited = True
+                neighbor.distance = new_distance
+
+        current_node.visited = True
+        unvisited_nodes.remove(current_node)
 
     return result
 
