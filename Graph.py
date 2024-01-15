@@ -12,14 +12,16 @@ class Graph:
         self.nodes = {}
         self.edges = {}
         
-    def add_node(self, name):
+    def add_node(self, name, distance=float('inf')):
         node = self.nodes.get(name)
 
         if node is None:
             node = Node(name)
+            node.distance = distance 
             self.nodes[name] = node
-        
+
         return node
+
 
     def add_edge(self, name, node0, node1, weight=None): 
             edge = self.edges.get(name)
@@ -59,24 +61,39 @@ class Graph:
     def get_random_edge(self):
         return random.choice(list[self.edges.values()])
     
+    def find_root(self, node_id, forest):
+        if node_id not in forest:
+            return node_id
+        else:
+            return self.find_root(forest[node_id], forest)
+
     def save_graph(self, filename):
-        value = 'digraph X {\n' if self.digraph else 'graph X {\n'
+        try:
+            value = 'digraph X {\n' if self.digraph else 'graph X {\n'
 
-        for node in self.nodes.values():
-            if hasattr(node, 'distance'):
-                value += f'  {node.id} [label="{node.distance:.2f}"];\n'
+            for node in self.nodes.values():
+                if hasattr(node, 'distance'):
+                    distance_label = f' ({node.distance})' if node.distance != float('inf') else '' 
+                    value += f' {node.id} [label="nodo{node.id}{distance_label}"];\n'
 
-        for edge in self.edges.values():
-            n0 = edge.node0.id
-            n1 = edge.node1.id
-            weight = f' [weight={edge.weight}]' if edge.weight is not None else ''  # Weight label
-            char = ' -> ' if self.digraph else ' -- '
+            for edge in self.edges.values():
+                n0 = edge.node0.id
+                n1 = edge.node1.id
+                weight_label = f' [label="{edge.weight}"]' if edge.weight is not None else ''  # Weight label
+                weight = f' [weight={edge.weight}]' if edge.weight is not None else ''  # Weight
+                char = ' -> ' if self.digraph else ' -- '
 
-            value += f'  {n0}{char}{n1}{weight};\n'
 
-        value += '}\n'
+                value += f'  {n0}{char}{n1} {weight_label};\n'
 
-        with open(filename, "w") as file:
-            file.write(value)
+            value += '}\n'
+
+            with open(filename, "w") as file:
+                file.write(value)
+            
+            print(f"Se ha generado el archivo DOT: {filename}")
+        except Exception as e:
+            print(f"Error al escribir el archivo DOT: {e}")
+
 
 
