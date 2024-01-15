@@ -7,10 +7,9 @@ sys.setrecursionlimit(10000)
 
 if __name__ == "__main__":
     sys.setrecursionlimit(10000)
-    size = 500
+    size = 30
 
-
-    # ========= Generates grid graph ============
+    #========= Generates grid graph ============
     graph = a.grid_model(10,50) 
     a.add_random_weights(graph, 1, 20)
     graph.save_graph(f"Graphs/BFS/grid_graph ({size} nodes).dot")
@@ -40,7 +39,7 @@ if __name__ == "__main__":
     result_tree = a.Prim(graph)
     result_tree.save_graph(f"Graphs/Prim/grid_prim ({size} nodes).dot")
 
-    # ========= Generates Erdos-Renyi graph ============
+    #========= Generates Erdos-Renyi graph ============
     graph = a.erdos_renyi_model(size, 4890)
     a.add_random_weights(graph, 1, 20)
     graph.save_graph(f"Graphs/BFS/erdos_renyi_graph ({size} nodes).dot")

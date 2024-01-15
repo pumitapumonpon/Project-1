@@ -382,6 +382,7 @@ def KruskalD(self):
     sorted_edges = sorted(self.edges.values(), key=lambda edge: edge.weight)
     forest = {}  # Disjoint trees
     result_graph = Graph(digraph=False, autocycle=False)
+    mst_value = 0  # Total weight of the MST
 
     for node in self.nodes:
         result_graph.add_node(node)
@@ -393,7 +394,9 @@ def KruskalD(self):
         if root0 != root1:
             result_graph.add_edge(edge.id, edge.node0.id, edge.node1.id, edge.weight)
             forest[root0] = root1  # Join trees
-
+            mst_value += edge.weight
+    
+    print("Direct Kruskal's algorithm -- The value of the MST is: ", mst_value)
     return result_graph
 
 
@@ -411,6 +414,7 @@ def KruskalI(self):
     sorted_edges = sorted(self.edges.values(), key=lambda edge: edge.weight, reverse=True)
     forest = {}  # Disjoint trees
     result_graph = Graph(digraph=self.digraph, autocycle=self.autocycle)
+    mst_value = 0  # Total weight of the MST
 
     for node_id in self.nodes.keys():
         result_graph.add_node(node_id)
@@ -422,7 +426,9 @@ def KruskalI(self):
         if root0 != root1:
             result_graph.add_edge(edge.id, edge.node0.id, edge.node1.id, edge.weight)
             forest[root0] = root1  # Join trees
+            mst_value += edge.weight
 
+    print("Inverse Kruskal's algorithm -- The value of the MST is: ", mst_value)
     return result_graph
 
 
@@ -439,6 +445,7 @@ def Prim(self):
     start_node = list(self.nodes.values())[0]
     visited_nodes = set([start_node])
     result_graph = Graph(digraph=False, autocycle=False)
+    mst_value = 0  # Total weight of the MST
 
     for node_id in self.nodes.keys():
         result_graph.add_node(node_id)
@@ -451,9 +458,11 @@ def Prim(self):
 
         min_edge = min(candidate_edges, key=lambda edge: edge.weight)
         result_graph.add_edge(min_edge.id, min_edge.node0.id, min_edge.node1.id, min_edge.weight)
+        mst_value += min_edge.weight
         visited_nodes.add(min_edge.node0)
         visited_nodes.add(min_edge.node1)
 
+    print("Prim's algorithm -- The value of the MST is: ", mst_value)
     return result_graph
 
 

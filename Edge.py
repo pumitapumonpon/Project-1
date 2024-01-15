@@ -3,7 +3,7 @@ class Edge:
         self.id = id
         self.node0 = source
         self.node1 = target
-        self.weight = weight  
+        self.weight = int(weight)  
         
     def __str__(self):
         if self.weight is not None:
