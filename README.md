@@ -2,6 +2,7 @@
 
 ## Objective
 Implementation of Kruskal (direct and inverse) and Prim algorithms in such a way that they calculate the minimum spanning tree, using the graph library developed in project 1.
+Project 3 and project 2 fixes.
 
 
 ## Deliverables
@@ -22,4 +23,5 @@ Using the graph library developed in project 1, implement the Kruskal (direct an
 
 - **Images of Visualization**
   - Images displaying the visualization of each graph (generated and calculated).
+  - Screenshots showing the MST value.
 
