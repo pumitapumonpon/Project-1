@@ -10,6 +10,7 @@ In the repository, you will find:
 - **Videos of Visualization**
   - Link to videos with the execution of the project. Two for each generation model, one with 100 nodes and another with 500.
   - https://drive.google.com/drive/folders/1sQIkQ23Ij2e4Dev8vXLlEecdd4Mh2VDo?usp=drive_link
+  - Note: These videos were exported in reverse
     
 - **Source code**
 
