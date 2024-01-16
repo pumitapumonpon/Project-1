@@ -1,25 +1,14 @@
-﻿# Project-4: Implementation of Kruskal and Prim algorithms
+﻿# Project-5: Spring Systems and Electrical Forces
 
 ## Objective
-Implementation of Kruskal (direct and inverse) and Prim algorithms in such a way that they calculate the minimum spanning tree, using the graph library developed in project 1.
+Given a graph, and using pygame, generate a visualization of it. Using the Spring method. Calculates the layout of a graph using the spring algorithm presented by P. Eades (1984). O(m+n)
 
 
 ## Deliverables
 In the repository, you will find:
-Using the graph library developed in project 1, implement the Kruskal (direct and inverse) and Prim algorithms in such a way that they calculate the minimum spanning tree; that is, develop the methods in the Graph class:
 
+- **Images and Videos of Visualization**
+  - Screenshots and links to videos with the execution of the project. Two for each generation model, one with 100 nodes and another with 500.
+    
 - **Source code**
-  - The Source code implementation of Kruskal (direct and inverse) and Prim algorithms:
-    -       def KruskalD(self):
-    -       def KruskalI(self):
-    -       def Prim(self):
-
-- **Generated Graphs Files**
-  - Two for each generator (one with 30 nodes and one with 300 nodes).
-
-- **Calculated Graphs Files**
-  - Two for each generator (one with 30 nodes and one with 300 nodes).
-
-- **Images of Visualization**
-  - Images displaying the visualization of each graph (generated and calculated).
 
