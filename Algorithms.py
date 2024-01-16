@@ -20,17 +20,17 @@ def grid_model(m, n, digraph = False):
 
     for i in range(m):
         for j in range(n):
-            actual_node = f'{i}-{j}'
-           
+            actual_node = i * n + j  # Utiliza un nombre numérico en lugar de una cadena
+
             node = graph.add_node(actual_node)
-            node.position = numpy.array([i, j]) 
+            node.position = numpy.array([float(i), float(j)])
 
             if i < m - 1:
-                right_node = f'{i + 1}-{j}'
+                right_node = (i + 1) * n + j
                 graph.add_edge(f'Arista {actual_node} -- {right_node}', actual_node, right_node)
 
             if j < n - 1:
-                under_node = f"{i}-{j + 1}"
+                under_node = i * n + (j + 1)
                 graph.add_edge(f'Arista {actual_node} -- {under_node}', actual_node, under_node)
 
     return graph
@@ -50,7 +50,6 @@ def erdos_renyi_model(n, m, digraph=False, autocycle=False):
     """
     if n <= 0 or m < n - 1:
         raise ValueError("Valores incorrectos para n y m")
-        #n = 1, m =  n-1
 
     graph = Graph(digraph, autocycle)
     

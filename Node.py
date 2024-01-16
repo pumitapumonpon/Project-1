@@ -7,7 +7,7 @@ class Node:
         self.edges = []
         self.neighbors = []
         self.visited = False
-        self.position = numpy.array([random.random(),random.random()])
+        self.position = numpy.array([random.random(), random.random()])  
         self.distance = float('inf')
 
     def __str__(self):
