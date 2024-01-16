@@ -7,8 +7,9 @@ Given a graph, and using pygame, generate a visualization of it. Using the Sprin
 ## Deliverables
 In the repository, you will find:
 
-- **Images and Videos of Visualization**
-  - Screenshots and links to videos with the execution of the project. Two for each generation model, one with 100 nodes and another with 500.
+- **Videos of Visualization**
+  - Link to videos with the execution of the project. Two for each generation model, one with 100 nodes and another with 500.
+  - https://drive.google.com/drive/folders/1sQIkQ23Ij2e4Dev8vXLlEecdd4Mh2VDo?usp=drive_link
     
 - **Source code**
 
