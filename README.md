@@ -1,4 +1,4 @@
-# Project-1
+# Graph Generation
 Graph Generation and Management Library. <br>
 
 Object-oriented library in Python for describing and utilizing graphs.<br>
